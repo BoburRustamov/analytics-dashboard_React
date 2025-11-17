@@ -1,0 +1,466 @@
+import {
+  Stack,
+  Card,
+  Text,
+  Group,
+  Switch,
+  Box,
+  Title,
+  Tabs,
+  TextInput,
+  Select,
+  Button,
+  Avatar,
+  Grid,
+  SegmentedControl,
+  ColorSwatch,
+  Slider,
+  Radio,
+  Checkbox,
+  Badge,
+  Divider,
+} from '@mantine/core';
+import {
+  IconSettings,
+  IconPalette,
+  IconBell,
+  IconShield,
+  IconUser,
+  IconMoon,
+  IconSun,
+  IconLanguage,
+  IconClock,
+  IconDeviceDesktop,
+  IconBrandTabler,
+  IconVolume,
+  IconMail,
+  IconMessage,
+  IconLock,
+  IconKey,
+  IconShieldCheck,
+  IconDevices,
+} from '@tabler/icons-react';
+import { useState } from 'react';
+import { useMantineColorScheme } from '@mantine/core';
+
+export const SettingsPage = () => {
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const [activeTab, setActiveTab] = useState<string | null>('general');
+  const [fontSize, setFontSize] = useState(14);
+  const [autoSave, setAutoSave] = useState(true);
+  const [notifications, setNotifications] = useState({
+    email: true,
+    push: true,
+    desktop: false,
+    marketing: false,
+  });
+
+  return (
+    <Box style={{ width: '100%', maxWidth: '100%' }}>
+      <Stack gap="lg" style={{ width: '100%' }}>
+        <Group justify="space-between" mb="md">
+          <Box>
+            <Title order={2} mb="xs">Settings</Title>
+            <Text c="dimmed" size="sm">Manage your account settings and preferences</Text>
+          </Box>
+          <Button variant="gradient" gradient={{ from: 'violet', to: 'grape' }}>
+            Save Changes
+          </Button>
+        </Group>
+
+        <Tabs value={activeTab} onChange={setActiveTab} orientation="vertical" defaultValue="general" style={{ width: '100%' }}>
+          <Grid gutter="md" style={{ margin: 0 }}>
+            <Grid.Col span={{ base: 12, sm: 4, md: 3, lg: 2.5 }}>
+              <Card shadow="sm" padding="md" radius="md" h="100%">
+                <Tabs.List>
+                <Tabs.Tab value="general" leftSection={<IconSettings size={16} />}>
+                  General
+                </Tabs.Tab>
+                <Tabs.Tab value="appearance" leftSection={<IconPalette size={16} />}>
+                  Appearance
+                </Tabs.Tab>
+                <Tabs.Tab value="notifications" leftSection={<IconBell size={16} />}>
+                  Notifications
+                </Tabs.Tab>
+                <Tabs.Tab value="security" leftSection={<IconShield size={16} />}>
+                  Security
+                </Tabs.Tab>
+                <Tabs.Tab value="account" leftSection={<IconUser size={16} />}>
+                  Account
+                </Tabs.Tab>
+              </Tabs.List>
+            </Card>
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 12, sm: 8, md: 9, lg: 9.5 }}>
+            <Card shadow="sm" padding="xl" radius="md" h="100%">
+              <Tabs.Panel value="general">
+                <Stack gap="md">
+                  <Title order={3}>General Settings</Title>
+                  <Divider />
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Text size="sm" fw={500}>Language</Text>
+                      <Text size="xs" c="dimmed">Select your preferred language</Text>
+                    </Box>
+                    <Select
+                      data={[
+                        { value: 'en', label: 'English' },
+                        { value: 'es', label: 'Spanish' },
+                        { value: 'fr', label: 'French' },
+                        { value: 'de', label: 'German' },
+                      ]}
+                      defaultValue="en"
+                      leftSection={<IconLanguage size={16} />}
+                      style={{ width: 200 }}
+                    />
+                  </Group>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Text size="sm" fw={500}>Timezone</Text>
+                      <Text size="xs" c="dimmed">Set your local timezone</Text>
+                    </Box>
+                    <Select
+                      data={[
+                        { value: 'utc', label: 'UTC' },
+                        { value: 'est', label: 'Eastern Time' },
+                        { value: 'pst', label: 'Pacific Time' },
+                        { value: 'cst', label: 'Central Time' },
+                      ]}
+                      defaultValue="est"
+                      leftSection={<IconClock size={16} />}
+                      style={{ width: 200 }}
+                    />
+                  </Group>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Text size="sm" fw={500}>Auto-save</Text>
+                      <Text size="xs" c="dimmed">Automatically save your work</Text>
+                    </Box>
+                    <Switch
+                      checked={autoSave}
+                      onChange={(event) => setAutoSave(event.currentTarget.checked)}
+                      size="md"
+                    />
+                  </Group>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Text size="sm" fw={500}>Data Export Format</Text>
+                      <Text size="xs" c="dimmed">Default format for data exports</Text>
+                    </Box>
+                    <SegmentedControl
+                      data={['CSV', 'JSON', 'Excel']}
+                      defaultValue="CSV"
+                    />
+                  </Group>
+                </Stack>
+              </Tabs.Panel>
+
+              <Tabs.Panel value="appearance">
+                <Stack gap="md">
+                  <Title order={3}>Appearance Settings</Title>
+                  <Divider />
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Text size="sm" fw={500}>Theme</Text>
+                      <Text size="xs" c="dimmed">Choose your preferred theme</Text>
+                    </Box>
+                    <SegmentedControl
+                      value={colorScheme}
+                      onChange={toggleColorScheme as any}
+                      data={[
+                        {
+                          label: (
+                            <Group gap="xs">
+                              <IconSun size={16} />
+                              <span>Light</span>
+                            </Group>
+                          ),
+                          value: 'light'
+                        },
+                        {
+                          label: (
+                            <Group gap="xs">
+                              <IconMoon size={16} />
+                              <span>Dark</span>
+                            </Group>
+                          ),
+                          value: 'dark'
+                        },
+                        {
+                          label: (
+                            <Group gap="xs">
+                              <IconDeviceDesktop size={16} />
+                              <span>System</span>
+                            </Group>
+                          ),
+                          value: 'auto'
+                        }
+                      ]}
+                    />
+                  </Group>
+
+                  <Box>
+                    <Group justify="space-between" mb="xs">
+                      <Text size="sm" fw={500}>Accent Color</Text>
+                      <Text size="xs" c="dimmed">Choose your accent color</Text>
+                    </Group>
+                    <Group>
+                      <ColorSwatch color="#7c3aed" size={30} />
+                      <ColorSwatch color="#06b6d4" size={30} />
+                      <ColorSwatch color="#10b981" size={30} />
+                      <ColorSwatch color="#f59e0b" size={30} />
+                      <ColorSwatch color="#ef4444" size={30} />
+                      <ColorSwatch color="#8b5cf6" size={30} />
+                      <ColorSwatch color="#3b82f6" size={30} />
+                    </Group>
+                  </Box>
+
+                  <Box>
+                    <Group justify="space-between" mb="xs">
+                      <Text size="sm" fw={500}>Font Size</Text>
+                      <Badge variant="light">{fontSize}px</Badge>
+                    </Group>
+                    <Slider
+                      value={fontSize}
+                      onChange={setFontSize}
+                      min={12}
+                      max={20}
+                      marks={[
+                        { value: 12, label: '12px' },
+                        { value: 14, label: '14px' },
+                        { value: 16, label: '16px' },
+                        { value: 18, label: '18px' },
+                        { value: 20, label: '20px' },
+                      ]}
+                    />
+                  </Box>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Text size="sm" fw={500}>Sidebar</Text>
+                      <Text size="xs" c="dimmed">Sidebar display mode</Text>
+                    </Box>
+                    <SegmentedControl
+                      data={['Expanded', 'Collapsed', 'Hidden']}
+                      defaultValue="Expanded"
+                    />
+                  </Group>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Text size="sm" fw={500}>Animations</Text>
+                      <Text size="xs" c="dimmed">Enable interface animations</Text>
+                    </Box>
+                    <Switch defaultChecked size="md" />
+                  </Group>
+                </Stack>
+              </Tabs.Panel>
+
+              <Tabs.Panel value="notifications">
+                <Stack gap="md">
+                  <Title order={3}>Notification Settings</Title>
+                  <Divider />
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Group gap="xs">
+                        <IconMail size={20} />
+                        <Text size="sm" fw={500}>Email Notifications</Text>
+                      </Group>
+                      <Text size="xs" c="dimmed">Receive notifications via email</Text>
+                    </Box>
+                    <Switch
+                      checked={notifications.email}
+                      onChange={(event) =>
+                        setNotifications({ ...notifications, email: event.currentTarget.checked })
+                      }
+                      size="md"
+                    />
+                  </Group>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Group gap="xs">
+                        <IconMessage size={20} />
+                        <Text size="sm" fw={500}>Push Notifications</Text>
+                      </Group>
+                      <Text size="xs" c="dimmed">Receive push notifications on your device</Text>
+                    </Box>
+                    <Switch
+                      checked={notifications.push}
+                      onChange={(event) =>
+                        setNotifications({ ...notifications, push: event.currentTarget.checked })
+                      }
+                      size="md"
+                    />
+                  </Group>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Group gap="xs">
+                        <IconDeviceDesktop size={20} />
+                        <Text size="sm" fw={500}>Desktop Notifications</Text>
+                      </Group>
+                      <Text size="xs" c="dimmed">Show desktop notifications</Text>
+                    </Box>
+                    <Switch
+                      checked={notifications.desktop}
+                      onChange={(event) =>
+                        setNotifications({ ...notifications, desktop: event.currentTarget.checked })
+                      }
+                      size="md"
+                    />
+                  </Group>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Group gap="xs">
+                        <IconVolume size={20} />
+                        <Text size="sm" fw={500}>Sound Alerts</Text>
+                      </Group>
+                      <Text size="xs" c="dimmed">Play sound for notifications</Text>
+                    </Box>
+                    <Switch defaultChecked size="md" />
+                  </Group>
+
+                  <Divider />
+                  <Title order={4}>Notification Types</Title>
+
+                  <Stack gap="xs">
+                    <Checkbox label="System updates and maintenance" defaultChecked />
+                    <Checkbox label="Security alerts" defaultChecked />
+                    <Checkbox label="Report generation complete" defaultChecked />
+                    <Checkbox label="User activity" />
+                    <Checkbox label="Marketing and promotional" />
+                  </Stack>
+                </Stack>
+              </Tabs.Panel>
+
+              <Tabs.Panel value="security">
+                <Stack gap="md">
+                  <Title order={3}>Security Settings</Title>
+                  <Divider />
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Group gap="xs">
+                        <IconShieldCheck size={20} />
+                        <Text size="sm" fw={500}>Two-Factor Authentication</Text>
+                      </Group>
+                      <Text size="xs" c="dimmed">Add an extra layer of security</Text>
+                    </Box>
+                    <Button variant="light" color="green">Enable</Button>
+                  </Group>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Group gap="xs">
+                        <IconKey size={20} />
+                        <Text size="sm" fw={500}>Password</Text>
+                      </Group>
+                      <Text size="xs" c="dimmed">Last changed 30 days ago</Text>
+                    </Box>
+                    <Button variant="light">Change Password</Button>
+                  </Group>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Group gap="xs">
+                        <IconDevices size={20} />
+                        <Text size="sm" fw={500}>Active Sessions</Text>
+                      </Group>
+                      <Text size="xs" c="dimmed">Manage your active sessions</Text>
+                    </Box>
+                    <Button variant="light">View Sessions</Button>
+                  </Group>
+
+                  <Divider />
+                  <Title order={4}>Privacy</Title>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Text size="sm" fw={500}>Profile Visibility</Text>
+                      <Text size="xs" c="dimmed">Control who can see your profile</Text>
+                    </Box>
+                    <Select
+                      data={['Public', 'Private', 'Friends Only']}
+                      defaultValue="Public"
+                      style={{ width: 150 }}
+                    />
+                  </Group>
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Text size="sm" fw={500}>Data Sharing</Text>
+                      <Text size="xs" c="dimmed">Share usage data for improvements</Text>
+                    </Box>
+                    <Switch size="md" />
+                  </Group>
+                </Stack>
+              </Tabs.Panel>
+
+              <Tabs.Panel value="account">
+                <Stack gap="md">
+                  <Title order={3}>Account Settings</Title>
+                  <Divider />
+
+                  <Grid>
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
+                      <TextInput
+                        label="Username"
+                        placeholder="johndoe"
+                        leftSection={<IconUser size={16} />}
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
+                      <TextInput
+                        label="Email"
+                        placeholder="john@example.com"
+                        leftSection={<IconMail size={16} />}
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
+                      <TextInput
+                        label="First Name"
+                        placeholder="John"
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
+                      <TextInput
+                        label="Last Name"
+                        placeholder="Doe"
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={12}>
+                      <TextInput
+                        label="Bio"
+                        placeholder="Tell us about yourself"
+                      />
+                    </Grid.Col>
+                  </Grid>
+
+                  <Divider />
+
+                  <Group justify="space-between">
+                    <Box>
+                      <Text size="sm" fw={500} c="red">Delete Account</Text>
+                      <Text size="xs" c="dimmed">Permanently delete your account and data</Text>
+                    </Box>
+                    <Button color="red" variant="light">Delete Account</Button>
+                  </Group>
+                </Stack>
+              </Tabs.Panel>
+            </Card>
+          </Grid.Col>
+        </Grid>
+      </Tabs>
+      </Stack>
+    </Box>
+  );
+};
